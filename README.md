@@ -1,0 +1,2 @@
+# Stalkie
+Discord bot
