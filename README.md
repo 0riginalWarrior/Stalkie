@@ -28,4 +28,4 @@ Stalkie relies on the following external services to provide its features. By us
 ### **Disclaimer**
 Stalkie is not affiliated with or endorsed by any of these services. Use of these services is subject to their respective terms and conditions.  
 
-For any questions or concerns, please contact the bot owner.  
+For any questions or concerns, [contact me](https://discord.gg/SDK4VwJknR)  
