@@ -27,7 +27,7 @@ Stalkie relies on the following external services to provide its features. By us
 ### 4. WhatsMyName Dataset  
 - **Service**: Username search across multiple platforms.  
 - **GitHub Repository**: [WhatsMyName GitHub](https://github.com/WebBreacher/WhatsMyName)  
-- **License**: [MIT License](https://github.com/WebBreacher/WhatsMyName/blob/main/LICENSE)  
+- **License**: [MIT License](https://github.com/WebBreacher/WhatsMyName/blob/main/LICENSE.md)  
 
 ---
 
