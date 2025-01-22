@@ -20,7 +20,7 @@ Stalkie relies on the following external services to provide its features. By us
 ### 3. Holehe  
 - **Service**: Email account existence checks.  
 - **GitHub Repository**: [Holehe GitHub](https://github.com/megadose/holehe)  
-- **License**: [MIT License](https://github.com/megadose/holehe/blob/master/LICENSE)  
+- **License**: [MIT License](https://github.com/megadose/holehe/blob/master/LICENSE.md)  
 
 ---
 
