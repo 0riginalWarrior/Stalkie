@@ -13,7 +13,7 @@ Stalkie relies on the following external services to provide its features. By us
 
 ### 2. LeakCheck.io  
 - **Service**: Leaked data checks for emails and usernames.  
-- **Terms of Service**: [LeakCheck Tos]([https://leakcheck.io/terms](https://wiki.leakcheck.io/en/tos)
+- **Terms of Service**: [LeakCheck Tos](https://wiki.leakcheck.io/en/tos)
 
 ---
 
