@@ -2,7 +2,6 @@
 
 Stalkie relies on the following external services to provide its features. By using Stalkie, you agree to the terms of service of these services:
 
----
 
 ### 1. Have I Been Pwned (HIBP)  
 - **Service**: Email breach checks.  
@@ -21,20 +20,6 @@ Stalkie relies on the following external services to provide its features. By us
 - **Service**: Email account existence checks.  
 - **GitHub Repository**: [Holehe GitHub](https://github.com/megadose/holehe)  
 - **License**: [MIT License](https://github.com/megadose/holehe/blob/master/LICENSE.md)  
-
----
-
-### 4. WhatsMyName Dataset  
-- **Service**: Username search across multiple platforms.  
-- **GitHub Repository**: [WhatsMyName GitHub](https://github.com/WebBreacher/WhatsMyName)  
-- **License**: [MIT License](https://github.com/WebBreacher/WhatsMyName/blob/main/LICENSE.md)  
-
----
-
-### 5. Hudson Rock  
-- **Service**: Security warnings for compromised usernames.  
-- **Website**: [Hudson Rock](https://hudsonrock.com)  
-- **Privacy Policy**: [Hudson Rock Privacy](https://hudsonrock.com/privacy)  
 
 ---
 
