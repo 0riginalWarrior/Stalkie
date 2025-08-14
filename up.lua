@@ -28,7 +28,7 @@ local blob = "\u{000D}" -- newline
 local blob2 = "\u{001E}" -- invisible character
 
 -- Script URL for re-execution
-local scriptUrl = "https://raw.githubusercontent.com/SecretMac/meet/refs/heads/main/auto.lua"
+local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/up.lua"
 
 -- Queue teleport compatibility across executors
 local queueTeleport = (syn and syn.queue_on_teleport) or
