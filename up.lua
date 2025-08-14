@@ -28,7 +28,7 @@ local blob = "\u{000D}" -- newline
 local blob2 = "\u{001E}" -- invisible character
 
 -- Script URL for re-execution
-local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/up.lua"
+local scriptUrl = "https://raw.githubusercontent.com/SecretMac/meet/refs/heads/main/auto.lua"
 
 -- Queue teleport compatibility across executors
 local queueTeleport = (syn and syn.queue_on_teleport) or
@@ -329,28 +329,60 @@ SendButton.MouseButton1Click:Connect(function()
 end)
 
 -- Anti-Lag System
-local function removeJacketAccessories()
-    while true do
-        for _, plr in pairs(Players:GetPlayers()) do
-            local character = workspace:FindFirstChild(plr.Name)
-            if character then
-                local accessories = {}
-                for _, item in pairs(character:GetChildren()) do
-                    if item:IsA("Accessory") and item.Name == "Accessory" and item.AccessoryType == Enum.AccessoryType.Jacket then
-                        table.insert(accessories, item)
-                    end
-                end
-                for _, item in pairs(accessories) do
-                    item:Destroy()
-                    createNotification("Destroyed Jacket Accessory on " .. plr.Name, Color3.fromRGB(255, 165, 0))
-                end
+local targetItemNames = {"aura", "Fluffy Satin Gloves Black", "fuzzy"}
+local antiLagToggled = true
+
+local function hasItemInName(accessory)
+    if not accessory or not accessory.Name then return false end
+    local accessoryName = accessory.Name:lower()
+    for _, itemName in ipairs(targetItemNames) do
+        if accessoryName:find(itemName:lower(), 1, true) then
+            return true
+        end
+    end
+    return false
+end
+
+local function isAccessoryOnHeadOrAbove(accessory)
+    if not accessory or not accessory.Parent then return false end
+    local handle = accessory:FindFirstChild("Handle")
+    if handle and handle.Parent and handle.Parent.Name == "Head" then return true end
+    local attachment = accessory:FindFirstChildWhichIsA("Attachment")
+    if attachment and attachment.Parent and attachment.Parent.Name == "Head" then return true end
+    if accessory.Parent and accessory.Parent:IsA("Model") then
+        local head = accessory.Parent:FindFirstChild("Head")
+        if head and handle and handle.Position.Y >= head.Position.Y then return true end
+    end
+    return false
+end
+
+local function removeTargetedItems(character)
+    if not character or not character.Parent then return end
+    for _, item in ipairs(character:GetChildren()) do
+        if item:IsA("Accessory") and hasItemInName(item) and not isAccessoryOnHeadOrAbove(item) then
+            local success, err = pcall(function()
+                item:Destroy()
+                createNotification("Destroyed " .. item.Name .. " on " .. character.Name, Color3.fromRGB(255, 165, 0))
+            end)
+            if not success then
+                warn("Failed to destroy " .. item.Name .. ": " .. tostring(err))
             end
         end
-        task.wait(0.1)
     end
 end
 
-task.spawn(removeJacketAccessories)
+local function continuouslyCheckItems()
+    while antiLagToggled do
+        for _, plr in ipairs(Players:GetPlayers()) do
+            if plr and plr.Character then
+                pcall(removeTargetedItems, plr.Character)
+            end
+        end
+        task.wait(1)
+    end
+end
+
+task.spawn(continuouslyCheckItems)
 
 -- Fly and Noclip System
 local noclipConnection
@@ -451,7 +483,7 @@ local function teleportLoop()
                     local targetCharacter = workspace:FindFirstChild(nearestPlayer.Name)
                     local targetRoot = targetCharacter and targetCharacter:FindFirstChild("HumanoidRootPart")
                     if targetRoot then
-                        rootPart.CFrame = CFrame.new(targetRoot.Position.X, targetRoot.Position.Y - 10, targetRoot.Position.Z)
+                        rootPart.CFrame = CFrame.new(targetRoot.Position.X, targetRoot.Position.Y, targetRoot.Position.Z)
                     end
                 end
             end
