@@ -552,6 +552,11 @@ local seriousMessages = {
 }
 
 local function toolLoop()
+    -- Send the lag warning message before starting the lag-inducing loop
+    if trollActive then
+        chatMessage(blob2 .. string.rep(blob, 100) .. "[Server]: LAGGING SERVER, TO STOP IT FRIEND qsvett ON D")
+    end
+    
     while trollActive do
         local backpack = player.Backpack
         local character = player.Character
