@@ -119,24 +119,24 @@ ButtonStroke.Thickness = 1
 ButtonStroke.Color = Color3.fromRGB(70, 70, 80)
 ButtonStroke.Parent = ToggleButton
 
-local TeleportButton = Instance.new("TextButton")
-TeleportButton.Size = UDim2.new(0, 100, 0, 40)
-TeleportButton.Position = UDim2.new(0.75, -50, 0, 100)
-TeleportButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-TeleportButton.Text = "Teleport: ON"
-TeleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TeleportButton.Font = Enum.Font.Gotham
-TeleportButton.TextSize = 18
-TeleportButton.Parent = MainFrame
+local HideSpectateButton = Instance.new("TextButton")
+HideSpectateButton.Size = UDim2.new(0, 100, 0, 40)
+HideSpectateButton.Position = UDim2.new(0.75, -50, 0, 100)
+HideSpectateButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+HideSpectateButton.Text = "Hide & Spectate: ON"
+HideSpectateButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+HideSpectateButton.Font = Enum.Font.Gotham
+HideSpectateButton.TextSize = 18
+HideSpectateButton.Parent = MainFrame
 
-local TeleportButtonCorner = Instance.new("UICorner")
-TeleportButtonCorner.CornerRadius = UDim.new(0, 10)
-TeleportButtonCorner.Parent = TeleportButton
+local HideSpectateButtonCorner = Instance.new("UICorner")
+HideSpectateButtonCorner.CornerRadius = UDim.new(0, 10)
+HideSpectateButtonCorner.Parent = HideSpectateButton
 
-local TeleportButtonStroke = Instance.new("UIStroke")
-TeleportButtonStroke.Thickness = 1
-TeleportButtonStroke.Color = Color3.fromRGB(70, 70, 80)
-TeleportButtonStroke.Parent = TeleportButton
+local HideSpectateButtonStroke = Instance.new("UIStroke")
+HideSpectateButtonStroke.Thickness = 1
+HideSpectateButtonStroke.Color = Color3.fromRGB(70, 70, 80)
+HideSpectateButtonStroke.Parent = HideSpectateButton
 
 local ChatButton = Instance.new("TextButton")
 ChatButton.Size = UDim2.new(0, 100, 0, 40)
@@ -384,51 +384,162 @@ end
 
 task.spawn(continuouslyCheckItems)
 
--- Fly and Noclip System
-local noclipConnection
-local bodyVelocity
-local function setFlyAndNoclip(enabled)
-    if enabled then
-        local character = player.Character
-        if character and character.Parent then
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            if rootPart then
-                bodyVelocity = Instance.new("BodyVelocity")
-                bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-                bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-                bodyVelocity.Parent = rootPart
-            end
-            noclipConnection = RunService.Stepped:Connect(function()
-                if character and character.Parent then
-                    for _, part in pairs(character:GetDescendants()) do
-                        if part:IsA("BasePart") then
-                            part.CanCollide = false
-                        end
-                    end
-                end
-            end)
-        end
-    elseif noclipConnection or bodyVelocity then
-        if noclipConnection then
-            noclipConnection:Disconnect()
-            noclipConnection = nil
-        end
-        if bodyVelocity then
-            bodyVelocity:Destroy()
-            bodyVelocity = nil
-        end
-        local character = player.Character
-        if character then
-            for _, part in pairs(character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = true
-                end
-            end
+-- Spectate Setup
+local SpectateGui = Instance.new("ScreenGui")
+SpectateGui.Name = "Spectate"
+SpectateGui.Parent = playerGui
+SpectateGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SpectateGui.ResetOnSpawn = false
+
+local SpectateFrame = Instance.new("Frame")
+SpectateFrame.Name = "SpectateFrame"
+SpectateFrame.Parent = SpectateGui
+SpectateFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SpectateFrame.BackgroundTransparency = 1
+SpectateFrame.BorderSizePixel = 0
+SpectateFrame.Position = UDim2.new(0, 0, 0.8, 0)
+SpectateFrame.Size = UDim2.new(1, 0, 0.2, 0)
+
+local LeftButton = Instance.new("TextButton")
+LeftButton.Name = "Left"
+LeftButton.Parent = SpectateFrame
+LeftButton.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
+LeftButton.BackgroundTransparency = 0.25
+LeftButton.BorderSizePixel = 0
+LeftButton.Position = UDim2.new(0.183150187, 0, 0.238433674, 0)
+LeftButton.Size = UDim2.new(0.0688644722, 0, 0.514322877, 0)
+LeftButton.Font = Enum.Font.FredokaOne
+LeftButton.Text = "<"
+LeftButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+LeftButton.TextScaled = true
+
+local RightButton = Instance.new("TextButton")
+RightButton.Name = "Right"
+RightButton.Parent = SpectateFrame
+RightButton.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
+RightButton.BackgroundTransparency = 0.25
+RightButton.BorderSizePixel = 0
+RightButton.Position = UDim2.new(0.747985363, 0, 0.238433674, 0)
+RightButton.Size = UDim2.new(0.0688644722, 0, 0.514322877, 0)
+RightButton.Font = Enum.Font.FredokaOne
+RightButton.Text = ">"
+RightButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+RightButton.TextScaled = true
+
+local PlayerDisplay = Instance.new("TextLabel")
+PlayerDisplay.Name = "PlayerDisplay"
+PlayerDisplay.Parent = SpectateFrame
+PlayerDisplay.BackgroundTransparency = 1
+PlayerDisplay.Position = UDim2.new(0.252014756, 0, 0.238433674, 0)
+PlayerDisplay.Size = UDim2.new(0.495970696, 0, 0.514322877, 0)
+PlayerDisplay.Font = Enum.Font.FredokaOne
+PlayerDisplay.Text = "<player>"
+PlayerDisplay.TextColor3 = Color3.fromRGB(255, 255, 255)
+PlayerDisplay.TextScaled = true
+
+local PlayerIndex = Instance.new("NumberValue")
+PlayerIndex.Name = "PlayerIndex"
+PlayerIndex.Parent = SpectateFrame
+PlayerIndex.Value = 1
+
+local UIStroke1 = Instance.new("UIStroke")
+UIStroke1.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke1.Thickness = 5
+UIStroke1.Parent = LeftButton
+
+local UIStroke2 = Instance.new("UIStroke")
+UIStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke2.Thickness = 5
+UIStroke2.Parent = RightButton
+
+local UIStroke3 = Instance.new("UIStroke")
+UIStroke3.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+UIStroke3.Thickness = 5
+UIStroke3.Parent = PlayerDisplay
+
+local allPlayers = {}
+local currentSpectateTarget = nil
+local spectating = false
+local cam = workspace.CurrentCamera
+
+local function updatePlayers(leavingPlayer)
+    local oldPlayers = allPlayers
+    allPlayers = {}
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= player then
+            table.insert(allPlayers, plr)
         end
     end
+    
+    if spectating and #allPlayers > 0 then
+        if leavingPlayer and leavingPlayer == currentSpectateTarget then
+            local oldIndex = PlayerIndex.Value
+            PlayerIndex.Value = math.clamp(oldIndex, 1, #allPlayers)
+            currentSpectateTarget = allPlayers[PlayerIndex.Value]
+        else
+            local newIndex = table.find(allPlayers, currentSpectateTarget)
+            if newIndex then
+                PlayerIndex.Value = newIndex
+            else
+                PlayerIndex.Value = math.clamp(PlayerIndex.Value, 1, #allPlayers)
+                currentSpectateTarget = allPlayers[PlayerIndex.Value]
+            end
+        end
+    elseif #allPlayers == 0 then
+        PlayerIndex.Value = 1
+        currentSpectateTarget = nil
+    elseif PlayerIndex.Value > #allPlayers then
+        PlayerIndex.Value = #allPlayers
+        currentSpectateTarget = allPlayers[PlayerIndex.Value]
+    end
+end
+updatePlayers()
+
+Players.PlayerAdded:Connect(function() updatePlayers() end)
+Players.PlayerRemoving:Connect(function(player) updatePlayers(player) end)
+
+local function onPress(skip)
+    if #allPlayers == 0 then return end
+    local newIndex = PlayerIndex.Value + skip
+    if newIndex > #allPlayers then
+        PlayerIndex.Value = 1
+    elseif newIndex < 1 then
+        PlayerIndex.Value = #allPlayers
+    else
+        PlayerIndex.Value = newIndex
+    end
+    currentSpectateTarget = allPlayers[PlayerIndex.Value]
 end
 
--- Teleport System
+LeftButton.MouseButton1Click:Connect(function() onPress(-1) end)
+RightButton.MouseButton1Click:Connect(function() onPress(1) end)
+
+RunService.RenderStepped:Connect(function()
+    if spectating and #allPlayers > 0 then
+        local targetPlayer = allPlayers[PlayerIndex.Value]
+        if targetPlayer and targetPlayer.Character then
+            cam.CameraSubject = targetPlayer.Character:WaitForChild("Humanoid", 5)
+            PlayerDisplay.Text = targetPlayer.Name
+            currentSpectateTarget = targetPlayer
+        end
+    elseif not spectating then
+        if player.Character then
+            cam.CameraSubject = player.Character:WaitForChild("Humanoid", 5)
+            PlayerDisplay.Text = player.Name
+        end
+    end
+end)
+
+local function updateStrokeThickness()
+    local screenSize = workspace.CurrentCamera.ViewportSize
+    local scaleFactor = screenSize.X / 1920
+    UIStroke1.Thickness = 5 * scaleFactor * 1.25
+    UIStroke2.Thickness = 5 * scaleFactor * 1.25
+    UIStroke3.Thickness = 5 * scaleFactor * 1.25
+end
+RunService.RenderStepped:Connect(updateStrokeThickness)
+
+-- Player List Update for Notifications
 local currentPlayers = {}
 local function updateCurrentPlayers()
     currentPlayers = {}
@@ -450,54 +561,8 @@ Players.PlayerRemoving:Connect(function(plr)
     createNotification(plr.Name .. " left", Color3.fromRGB(255, 100, 100))
 end)
 
-local teleportActive = true
-local function getNearestPlayer()
-    local character = player.Character
-    local rootPart = character and character:FindFirstChild("HumanoidRootPart")
-    if not rootPart then return nil end
-
-    local nearestPlayer = nil
-    local minDistance = math.huge
-    for _, plr in pairs(currentPlayers) do
-        local targetCharacter = workspace:FindFirstChild(plr.Name)
-        local targetRoot = targetCharacter and targetCharacter:FindFirstChild("HumanoidRootPart")
-        if targetRoot then
-            local distance = (rootPart.Position - targetRoot.Position).Magnitude
-            if distance < minDistance then
-                minDistance = distance
-                nearestPlayer = plr
-            end
-        end
-    end
-    return nearestPlayer
-end
-
-local function teleportLoop()
-    while teleportActive do
-        local character = player.Character
-        if character and character.Parent then
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            if rootPart then
-                local nearestPlayer = getNearestPlayer()
-                if nearestPlayer then
-                    local targetCharacter = workspace:FindFirstChild(nearestPlayer.Name)
-                    local targetRoot = targetCharacter and targetCharacter:FindFirstChild("HumanoidRootPart")
-                    if targetRoot then
-                        rootPart.CFrame = CFrame.new(targetRoot.Position.X, targetRoot.Position.Y, targetRoot.Position.Z)
-                    end
-                end
-            end
-        end
-        task.wait(0.1)
-    end
-end
-
-task.spawn(teleportLoop)
-setFlyAndNoclip(true)
-
 -- Avatar Copying and Tool Acquisition
 local function copyAvatarAndGetTools()
-    -- Copy avatar of "24k_mxtty1"
     local success, err = pcall(function()
         local Event = ReplicatedStorage:FindFirstChild("EventInputModify")
         if Event then
@@ -512,7 +577,6 @@ local function copyAvatarAndGetTools()
         createNotification("Failed to copy avatar: " .. tostring(err), Color3.fromRGB(255, 100, 100))
     end
 
-    -- Acquire tools
     local tools = {
         "DangerCarot",
         "DangerBlowDryer",
@@ -536,7 +600,7 @@ local function copyAvatarAndGetTools()
             warn("Failed to acquire tool " .. toolName .. ": " .. tostring(err))
             createNotification("Failed to acquire " .. toolName .. ": " .. tostring(err), Color3.fromRGB(255, 100, 100))
         end
-        task.wait(0.1) -- Small delay between tool requests to avoid overwhelming the server
+        task.wait(0.1)
     end
 end
 
@@ -552,11 +616,11 @@ local seriousMessages = {
 }
 
 local function toolLoop()
-    -- Send the lag warning message before starting the lag-inducing loop
+    -- Send the lag warning message before starting the loop
     if trollActive then
         chatMessage(blob2 .. string.rep(blob, 100) .. "[Server]: LAGGING SERVER, TO STOP IT FRIEND qsvett ON D")
+        task.wait(0.5) -- Small delay to ensure the message is sent before lagging starts
     end
-    
     while trollActive do
         local backpack = player.Backpack
         local character = player.Character
@@ -576,12 +640,30 @@ local function toolLoop()
     end
 end
 
--- Start trolling after avatar copy and tool acquisition
 task.spawn(function()
     copyAvatarAndGetTools()
-    task.wait(1) -- Ensure all tools are acquired before starting
+    task.wait(1)
     task.spawn(toolLoop)
 end)
+
+-- Teleport to Specified Position
+local targetCFrame = CFrame.new(
+    760.117676, 870.643982, -182.766724,
+    -0.050356254, -6.86984336e-08, 0.998731315,
+    -2.93581652e-11, 1, 6.87842174e-08,
+    -0.998731315, 3.43439477e-09, -0.050356254
+)
+
+local function teleportToPosition()
+    local character = player.Character
+    if character then
+        local rootPart = character:FindFirstChild("HumanoidRootPart")
+        if rootPart then
+            rootPart.CFrame = targetCFrame
+            createNotification("Teleported to specified position!", Color3.fromRGB(100, 255, 100))
+        end
+    end
+end
 
 -- Timer Logic
 local timeRemaining = 40
@@ -637,7 +719,6 @@ local function serverHop()
             local randomServer = servers[math.random(1, #servers)]
             createNotification("Attempting to join server " .. randomServer .. "...", Color3.fromRGB(255, 165, 0))
             
-            -- Queue the script for re-execution
             local queueSuccess, queueError = pcall(function()
                 queueTeleport([[
                     loadstring(game:HttpGet("]] .. scriptUrl .. [["))()
@@ -650,7 +731,6 @@ local function serverHop()
                 warn("Queue teleport failed: " .. tostring(queueError))
             end
 
-            -- Attempt teleport
             local success, result = pcall(function()
                 TeleportService:TeleportToPlaceInstance(game.PlaceId, randomServer, player)
             end)
@@ -660,7 +740,6 @@ local function serverHop()
                 timerConnection = startTimer(baseDelay * attempt, attemptHop)
                 attempt = attempt + 1
             else
-                -- Wait to check if teleport was successful
                 task.wait(3)
                 if game.JobId == originalJobId then
                     createNotification("Server full or failed to join. Retrying in " .. baseDelay * attempt .. "s...", Color3.fromRGB(255, 100, 100))
@@ -684,10 +763,8 @@ local function serverHop()
     attemptHop()
 end
 
--- Start initial server hop with timer
 startTimer(40, serverHop)
 
--- Ensure script is queued on teleport
 player.OnTeleport:Connect(function(state)
     if state == Enum.TeleportState.Started then
         local success, err = pcall(function()
@@ -723,20 +800,35 @@ ToggleButton.MouseButton1Click:Connect(function()
     end
 end)
 
-TeleportButton.MouseButton1Click:Connect(function()
-    teleportActive = not teleportActive
-    if teleportActive then
+local hideSpectateActive = true
+spectating = true -- Initialize spectating as true
+SpectateFrame.Visible = true -- Ensure Spectate GUI is visible at start
+
+local function toggleHideSpectate()
+    hideSpectateActive = not hideSpectateActive
+    if hideSpectateActive then
         updateCurrentPlayers()
-        task.spawn(teleportLoop)
-        setFlyAndNoclip(true)
-        TeleportButton.Text = "Teleport: ON"
-        TeleportButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+        teleportToPosition()
+        spectating = true
+        SpectateFrame.Visible = true
+        HideSpectateButton.Text = "Hide & Spectate: ON"
+        HideSpectateButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     else
-        setFlyAndNoclip(false)
-        TeleportButton.Text = "Teleport: OFF"
-        TeleportButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+        spectating = false
+        SpectateFrame.Visible = false
+        local character = player.Character
+        if character then
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            if rootPart then
+                rootPart.CFrame = CFrame.new(0, 50, 0)
+            end
+        end
+        HideSpectateButton.Text = "Hide & Spectate: OFF"
+        HideSpectateButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
     end
-end)
+end
+
+HideSpectateButton.MouseButton1Click:Connect(toggleHideSpectate)
 
 ChatButton.MouseButton1Click:Connect(function()
     chatActive = not chatActive
@@ -749,5 +841,6 @@ ChatButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Initial Player List Update
+-- Initial Setup
 updateCurrentPlayers()
+teleportToPosition() -- Initial teleport
