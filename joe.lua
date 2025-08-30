@@ -1,1 +1,0 @@
-print("Get the script via the luarmor bot")
