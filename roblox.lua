@@ -10,6 +10,7 @@ local UI_CONFIG = {
     ErrorColor = Color3.fromRGB(239, 68, 68),
     SuccessColor = Color3.fromRGB(34, 197, 94),
     WarningColor = Color3.fromRGB(251, 191, 36),
+    OrangeColor = Color3.fromRGB(255, 165, 0),
     TextColor = Color3.fromRGB(248, 250, 252),
     SubTextColor = Color3.fromRGB(148, 163, 184),
     BorderColor = Color3.fromRGB(51, 65, 85),
@@ -258,6 +259,9 @@ keyInput.FocusLost:Connect(function()
     ApplyStroke(inputContainer, UI_CONFIG.BorderColor, 1)
 end)
 
+local linkvertise_link = "https://ads.luarmor.net/get_key?for=Stalkie_Premium_Key-tmDFuKXiJWOW"
+local workink_link = "https://ads.luarmor.net/get_key?for=Premium_Workink-ZwXuREfbRLwQ"
+
 getKeyButton.MouseButton1Click:Connect(function()
     TweenService:Create(getKeyButton, TweenInfo.new(0.1), {
         Size = UDim2.new(0.46, 0, 0.9, 0)
@@ -269,9 +273,157 @@ getKeyButton.MouseButton1Click:Connect(function()
         Size = UDim2.new(0.48, 0, 1, 0)
     }):Play()
     
-    setclipboard("https://ads.luarmor.net/get_key?for=Stalkie_Premium_Key-tmDFuKXiJWOW")
-    statusLabel.Text = "Link copied! Complete the key process and paste your key above."
-    statusLabel.TextColor3 = UI_CONFIG.AccentColor
+    local overlay = CreateInstance("Frame", {
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BackgroundTransparency = 0.5,
+        Parent = frame,
+        ZIndex = 9,
+    })
+    
+    local popup = CreateInstance("Frame", {
+        Size = UDim2.new(0.8, 0, 0.6, 0),
+        Position = UDim2.new(0.1, 0, 0.2, 0),
+        BackgroundColor3 = UI_CONFIG.SecondaryColor,
+        BorderSizePixel = 0,
+        Parent = frame,
+        ZIndex = 10,
+    })
+    ApplyCorner(popup, UI_CONFIG.CornerRadius)
+    ApplyStroke(popup, UI_CONFIG.BorderColor, 1)
+    
+    local warningContainer = CreateInstance("Frame", {
+        Size = UDim2.new(1, -20, 0, 120),
+        Position = UDim2.new(0, 10, 0, 10),
+        BackgroundColor3 = UI_CONFIG.MainColor,
+        BorderSizePixel = 0,
+        Parent = popup,
+        ZIndex = 10,
+    })
+    ApplyCorner(warningContainer, UI_CONFIG.CornerRadius)
+    ApplyStroke(warningContainer, UI_CONFIG.WarningColor, 1)
+    
+    local warningTitle = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, -20, 0, 20),
+        Position = UDim2.new(0, 10, 0, 5),
+        BackgroundTransparency = 1,
+        Text = "Important Notice",
+        Font = UI_CONFIG.HeaderFont,
+        TextSize = UI_CONFIG.TextSize + 2,
+        TextColor3 = UI_CONFIG.WarningColor,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextWrapped = true,
+        Parent = warningContainer
+    })
+    
+    local warning = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, -20, 0, 80),
+        Position = UDim2.new(0, 10, 0, 25),
+        BackgroundTransparency = 1,
+        Text = "Close any pop-up ads and complete the process. For Workink on PC, you may need to install an extension, which you can remove after obtaining your key.",
+        TextWrapped = true,
+        Font = UI_CONFIG.Font,
+        TextSize = UI_CONFIG.TextSize,
+        TextColor3 = UI_CONFIG.TextColor,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top,
+        Parent = warningContainer
+    })
+    
+    local popupButtons = CreateInstance("Frame", {
+        Size = UDim2.new(1, -20, 0, 40),
+        Position = UDim2.new(0, 10, 1, -50),
+        BackgroundTransparency = 1,
+        Parent = popup
+    })
+    
+    local linkvertiseButton = CreateInstance("TextButton", {
+        Size = UDim2.new(0.48, 0, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundColor3 = UI_CONFIG.OrangeColor,
+        BorderSizePixel = 0,
+        Text = "Linkvertise",
+        Font = UI_CONFIG.HeaderFont,
+        TextSize = UI_CONFIG.TextSize,
+        TextColor3 = UI_CONFIG.TextColor,
+        AutoButtonColor = false,
+        Parent = popupButtons
+    })
+    ApplyCorner(linkvertiseButton, UI_CONFIG.CornerRadius)
+    
+    linkvertiseButton.MouseEnter:Connect(function()
+        TweenService:Create(linkvertiseButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+        }):Play()
+    end)
+    
+    linkvertiseButton.MouseLeave:Connect(function()
+        TweenService:Create(linkvertiseButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = UI_CONFIG.OrangeColor
+        }):Play()
+    end)
+    
+    linkvertiseButton.MouseButton1Click:Connect(function()
+        TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.46, 0, 0.9, 0)
+        }):Play()
+        
+        task.wait(0.1)
+        
+        TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.48, 0, 1, 0)
+        }):Play()
+        
+        setclipboard(linkvertise_link)
+        statusLabel.Text = "Linkvertise link copied! Complete the key process and paste your key above."
+        statusLabel.TextColor3 = UI_CONFIG.AccentColor
+        overlay:Destroy()
+        popup:Destroy()
+    end)
+    
+    local workinkButton = CreateInstance("TextButton", {
+        Size = UDim2.new(0.48, 0, 1, 0),
+        Position = UDim2.new(0.52, 0, 0, 0),
+        BackgroundColor3 = UI_CONFIG.SuccessColor,
+        BorderSizePixel = 0,
+        Text = "Workink",
+        Font = UI_CONFIG.HeaderFont,
+        TextSize = UI_CONFIG.TextSize,
+        TextColor3 = UI_CONFIG.TextColor,
+        AutoButtonColor = false,
+        Parent = popupButtons
+    })
+    ApplyCorner(workinkButton, UI_CONFIG.CornerRadius)
+    
+    workinkButton.MouseEnter:Connect(function()
+        TweenService:Create(workinkButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(22, 163, 74)
+        }):Play()
+    end)
+    
+    workinkButton.MouseLeave:Connect(function()
+        TweenService:Create(workinkButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = UI_CONFIG.SuccessColor
+        }):Play()
+    end)
+    
+    workinkButton.MouseButton1Click:Connect(function()
+        TweenService:Create(workinkButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.46, 0, 0.9, 0)
+        }):Play()
+        
+        task.wait(0.1)
+        
+        TweenService:Create(workinkButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.48, 0, 1, 0)
+        }):Play()
+        
+        setclipboard(workink_link)
+        statusLabel.Text = "Workink link copied! Complete the key process and paste your key above."
+        statusLabel.TextColor3 = UI_CONFIG.AccentColor
+        overlay:Destroy()
+        popup:Destroy()
+    end)
 end)
 
 verifyButton.MouseButton1Click:Connect(function()
