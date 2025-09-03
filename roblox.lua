@@ -11,6 +11,7 @@ local UI_CONFIG = {
     SuccessColor = Color3.fromRGB(34, 197, 94),
     WarningColor = Color3.fromRGB(251, 191, 36),
     OrangeColor = Color3.fromRGB(255, 165, 0),
+    PurpleColor = Color3.fromRGB(147, 112, 219),
     TextColor = Color3.fromRGB(248, 250, 252),
     SubTextColor = Color3.fromRGB(148, 163, 184),
     BorderColor = Color3.fromRGB(51, 65, 85),
@@ -261,6 +262,7 @@ end)
 
 local linkvertise_link = "https://ads.luarmor.net/get_key?for=Stalkie_Premium_Key-tmDFuKXiJWOW"
 local workink_link = "https://ads.luarmor.net/get_key?for=Premium_Workink-ZwXuREfbRLwQ"
+local lootlabs_link = "https://ads.luarmor.net/get_key?for=Lootlabs-QmqquHJxRtmP" 
 
 getKeyButton.MouseButton1Click:Connect(function()
     TweenService:Create(getKeyButton, TweenInfo.new(0.1), {
@@ -338,7 +340,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     })
     
     local linkvertiseButton = CreateInstance("TextButton", {
-        Size = UDim2.new(0.48, 0, 1, 0),
+        Size = UDim2.new(0.31, 0, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
         BackgroundColor3 = UI_CONFIG.OrangeColor,
         BorderSizePixel = 0,
@@ -365,13 +367,13 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     linkvertiseButton.MouseButton1Click:Connect(function()
         TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.46, 0, 0.9, 0)
+            Size = UDim2.new(0.29, 0, 0.9, 0)
         }):Play()
         
         task.wait(0.1)
         
         TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.48, 0, 1, 0)
+            Size = UDim2.new(0.31, 0, 1, 0)
         }):Play()
         
         setclipboard(linkvertise_link)
@@ -382,8 +384,8 @@ getKeyButton.MouseButton1Click:Connect(function()
     end)
     
     local workinkButton = CreateInstance("TextButton", {
-        Size = UDim2.new(0.48, 0, 1, 0),
-        Position = UDim2.new(0.52, 0, 0, 0),
+        Size = UDim2.new(0.31, 0, 1, 0),
+        Position = UDim2.new(0.34, 0, 0, 0),
         BackgroundColor3 = UI_CONFIG.SuccessColor,
         BorderSizePixel = 0,
         Text = "Workink",
@@ -409,17 +411,61 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     workinkButton.MouseButton1Click:Connect(function()
         TweenService:Create(workinkButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.46, 0, 0.9, 0)
+            Size = UDim2.new(0.29, 0, 0.9, 0)
         }):Play()
         
         task.wait(0.1)
         
         TweenService:Create(workinkButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.48, 0, 1, 0)
+            Size = UDim2.new(0.31, 0, 1, 0)
         }):Play()
         
         setclipboard(workink_link)
         statusLabel.Text = "Workink link copied! Complete the key process and paste your key above."
+        statusLabel.TextColor3 = UI_CONFIG.AccentColor
+        overlay:Destroy()
+        popup:Destroy()
+    end)
+    
+    local lootlabsButton = CreateInstance("TextButton", {
+        Size = UDim2.new(0.31, 0, 1, 0),
+        Position = UDim2.new(0.68, 0, 0, 0),
+        BackgroundColor3 = UI_CONFIG.PurpleColor,
+        BorderSizePixel = 0,
+        Text = "Lootlabs",
+        Font = UI_CONFIG.HeaderFont,
+        TextSize = UI_CONFIG.TextSize,
+        TextColor3 = UI_CONFIG.TextColor,
+        AutoButtonColor = false,
+        Parent = popupButtons
+    })
+    ApplyCorner(lootlabsButton, UI_CONFIG.CornerRadius)
+    
+    lootlabsButton.MouseEnter:Connect(function()
+        TweenService:Create(lootlabsButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(128, 0, 128)
+        }):Play()
+    end)
+    
+    lootlabsButton.MouseLeave:Connect(function()
+        TweenService:Create(lootlabsButton, TweenInfo.new(0.2), {
+            BackgroundColor3 = UI_CONFIG.PurpleColor
+        }):Play()
+    end)
+    
+    lootlabsButton.MouseButton1Click:Connect(function()
+        TweenService:Create(lootlabsButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.29, 0, 0.9, 0)
+        }):Play()
+        
+        task.wait(0.1)
+        
+        TweenService:Create(lootlabsButton, TweenInfo.new(0.1), {
+            Size = UDim2.new(0.31, 0, 1, 0)
+        }):Play()
+        
+        setclipboard(lootlabs_link)
+        statusLabel.Text = "Lootlabs link copied! Complete the key process and paste your key above."
         statusLabel.TextColor3 = UI_CONFIG.AccentColor
         overlay:Destroy()
         popup:Destroy()
