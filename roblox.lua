@@ -283,7 +283,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     })
     
     local popup = CreateInstance("Frame", {
-        Size = UDim2.new(0.8, 0, 0.7, 0), -- Increased height to accommodate elements
+        Size = UDim2.new(0.8, 0, 0.7, 0),
         Position = UDim2.new(0.1, 0, 0.15, 0),
         BackgroundColor3 = UI_CONFIG.SecondaryColor,
         BorderSizePixel = 0,
@@ -333,7 +333,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     local popupButtons = CreateInstance("Frame", {
         Size = UDim2.new(1, -20, 0, 40),
-        Position = UDim2.new(0, 10, 0, 140), -- Moved down to avoid overlap
+        Position = UDim2.new(0, 10, 0, 140),
         BackgroundTransparency = 1,
         Parent = popup
     })
@@ -428,7 +428,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     local keyInfoLabel = CreateInstance("TextLabel", {
         Size = UDim2.new(1, -20, 0, 30),
-        Position = UDim2.new(0, 10, 0, 190), -- Positioned below buttons
+        Position = UDim2.new(0, 10, 0, 190),
         BackgroundTransparency = 1,
         Text = "Linkvertise: 6-hour key | Workink: 12-hour key",
         Font = UI_CONFIG.Font,
@@ -516,3 +516,4 @@ local entrance = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.
     Size = isMobile and UDim2.new(0, 320, 0, 280) or UDim2.new(0, 400, 0, 320)
 })
 entrance:Play()
+
