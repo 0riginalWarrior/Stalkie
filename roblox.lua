@@ -283,8 +283,8 @@ getKeyButton.MouseButton1Click:Connect(function()
     })
     
     local popup = CreateInstance("Frame", {
-        Size = UDim2.new(0.8, 0, 0.7, 0),
-        Position = UDim2.new(0.1, 0, 0.15, 0),
+        Size = UDim2.new(0.8, 0, 0.8, 0), 
+        Position = UDim2.new(0.1, 0, 0.1, 0), 
         BackgroundColor3 = UI_CONFIG.SecondaryColor,
         BorderSizePixel = 0,
         Parent = frame,
@@ -294,7 +294,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     ApplyStroke(popup, UI_CONFIG.BorderColor, 1)
     
     local warningContainer = CreateInstance("Frame", {
-        Size = UDim2.new(1, -20, 0, 120),
+        Size = UDim2.new(1, -20, 0, 160), 
         Position = UDim2.new(0, 10, 0, 10),
         BackgroundColor3 = UI_CONFIG.MainColor,
         BorderSizePixel = 0,
@@ -318,7 +318,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     })
     
     local warning = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, -20, 0, 80),
+        Size = UDim2.new(1, -20, 0, 60), 
         Position = UDim2.new(0, 10, 0, 25),
         BackgroundTransparency = 1,
         Text = "Close any pop-up ads and complete the process. For Workink on PC, you may need to install an extension, which you can remove after obtaining your key.",
@@ -331,9 +331,23 @@ getKeyButton.MouseButton1Click:Connect(function()
         Parent = warningContainer
     })
     
+    local avgWarning = CreateInstance("TextLabel", {
+        Size = UDim2.new(1, -20, 0, 60), 
+        Position = UDim2.new(0, 10, 0, 85),
+        BackgroundTransparency = 1,
+        Text = "Do not download AVG Browser, just click on install then go back to Workink and wait around 60 seconds.",
+        TextWrapped = true,
+        Font = UI_CONFIG.Font,
+        TextSize = UI_CONFIG.TextSize,
+        TextColor3 = UI_CONFIG.WarningColor, 
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top,
+        Parent = warningContainer
+    })
+    
     local popupButtons = CreateInstance("Frame", {
         Size = UDim2.new(1, -20, 0, 40),
-        Position = UDim2.new(0, 10, 0, 140),
+        Position = UDim2.new(0, 10, 0, 180), 
         BackgroundTransparency = 1,
         Parent = popup
     })
@@ -428,7 +442,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     local keyInfoLabel = CreateInstance("TextLabel", {
         Size = UDim2.new(1, -20, 0, 30),
-        Position = UDim2.new(0, 10, 0, 190),
+        Position = UDim2.new(0, 10, 0, 230), 
         BackgroundTransparency = 1,
         Text = "Linkvertise: 6-hour key | Workink: 12-hour key",
         Font = UI_CONFIG.Font,
@@ -516,4 +530,3 @@ local entrance = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.
     Size = isMobile and UDim2.new(0, 320, 0, 280) or UDim2.new(0, 400, 0, 320)
 })
 entrance:Play()
-
