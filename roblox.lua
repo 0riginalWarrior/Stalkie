@@ -283,8 +283,8 @@ getKeyButton.MouseButton1Click:Connect(function()
     })
     
     local popup = CreateInstance("Frame", {
-        Size = UDim2.new(0.8, 0, 0.6, 0),
-        Position = UDim2.new(0.1, 0, 0.2, 0),
+        Size = UDim2.new(0.8, 0, 0.7, 0), -- Increased height to accommodate elements
+        Position = UDim2.new(0.1, 0, 0.15, 0),
         BackgroundColor3 = UI_CONFIG.SecondaryColor,
         BorderSizePixel = 0,
         Parent = frame,
@@ -333,7 +333,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     local popupButtons = CreateInstance("Frame", {
         Size = UDim2.new(1, -20, 0, 40),
-        Position = UDim2.new(0, 10, 1, -90),
+        Position = UDim2.new(0, 10, 0, 140), -- Moved down to avoid overlap
         BackgroundTransparency = 1,
         Parent = popup
     })
@@ -428,7 +428,7 @@ getKeyButton.MouseButton1Click:Connect(function()
     
     local keyInfoLabel = CreateInstance("TextLabel", {
         Size = UDim2.new(1, -20, 0, 30),
-        Position = UDim2.new(0, 10, 1, -40),
+        Position = UDim2.new(0, 10, 0, 190), -- Positioned below buttons
         BackgroundTransparency = 1,
         Text = "Linkvertise: 6-hour key | Workink: 12-hour key",
         Font = UI_CONFIG.Font,
