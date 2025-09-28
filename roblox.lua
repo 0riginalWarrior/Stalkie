@@ -335,7 +335,7 @@ getKeyButton.MouseButton1Click:Connect(function()
         Size = UDim2.new(1, -20, 0, 60), 
         Position = UDim2.new(0, 10, 0, 85),
         BackgroundTransparency = 1,
-        Text = "Do not download AVG Browser, just click on install then go back to Workink and wait around 60 seconds.",
+        Text = "I fixed linkvertise and removed the one hour cooldown.",
         TextWrapped = true,
         Font = UI_CONFIG.Font,
         TextSize = UI_CONFIG.TextSize,
@@ -530,3 +530,4 @@ local entrance = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.
     Size = isMobile and UDim2.new(0, 320, 0, 280) or UDim2.new(0, 400, 0, 320)
 })
 entrance:Play()
+
