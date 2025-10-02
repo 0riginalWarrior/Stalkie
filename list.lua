@@ -1574,4 +1574,11 @@ return {
     ["throw it in a circle"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/throw%20it%20in%20a%20circle.lua",
     ["ur the king"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/ur%20the%20king%2Elua",
     ["you should see me in a crown"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/you%20should%20see%20me%20in%20a%20crown%2Elua",
+    ["Poop"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/poop.lua",
+    ["Sharp 6"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/SHARP%206.lua",
+    ["Sharp 11"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/SHARP%2011.lua",
+    ["Split jump"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/split%20jump.lua",
+    ["Anim2"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/anim2.lua",
+    ["Flip"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/flip.lua",
+
 }
