@@ -1,5 +1,4 @@
 return {
-    ["100 saal hai"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/100%20saal%20hai.lua",
     ["100% Pure Love"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/100%25%20Pure%20Love.lua",
     ["15 MINUTES"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/15%20MINUTES%2Elua",
     ["2 arm stroke"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/2%20arm%20stroke%2Elua",
