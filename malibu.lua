@@ -281,4 +281,6 @@ return {
     ["xstep"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/xstep.lua",
     ["you ladies alright"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/you_ladies_alright.lua",
     ["zesty run"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/zesty_run.lua",
+    ["nova belly shake"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/nova%20belly%20shake.lua",
+    ["xenie thrust"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/refs/heads/main/xenie%20thrust.lua.lua",
 }
