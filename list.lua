@@ -1553,7 +1553,7 @@ return {
     ["Zombified"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/Zombified%2Elua",
     ["Zrde"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/Zrde%2Elua",
     ["all red"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/all%20red%2Elua",
-    ["bad guy"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/bad%20guy%2Elua",
+    ["Bad Guy"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/bad%20guy%2Elua",
     ["bb belt"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/bb%20belt%2Elua",
     ["big swastika (Use Inf15Thin)"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/big%20swastika%20%28Use%20Inf15Thin%29%2Elua",
     ["chapa"] = "https://raw.githubusercontent.com/0riginalWarrior/Animations/main/chapa.lua",
