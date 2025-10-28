@@ -1,0 +1,62 @@
+{
+  "pages": [
+    {
+      "page": 1,
+      "emotes": [
+        "Dancy",
+        "Fresh",
+        "Electro Shuffle",
+        "Ride The Pony",
+        "Floss",
+        "The Worm",
+        "Take The L",
+        "Boogie Down"
+      ]
+    },
+    {
+      "page": 2,
+      "emotes": [
+        "Hype",
+        "Tidy",
+        "Breakin'",
+        "Disco Fever",
+        "Orange Justice",
+        "Zany",
+        "Groove Jam",
+        "Freestylin'"
+      ]
+    },
+    {
+      "page": 3,
+      "emotes": [
+        "True Heart",
+        "Rambunctious",
+        "Twist",
+        "Living Large",
+        "Llama Bell",
+        "Fancy Feet",
+        "Hula",
+        "Electro Swing"
+      ]
+    },
+    {
+      "page": 4,
+      "emotes": [
+        "Phone It In",
+        "Flamenco",
+        "Backstroke",
+        "Marsh Walk",
+        "Scenario",
+        "Dream Feet",
+        "Switchstep",
+        "Billy Bounce"
+      ]
+    },
+    {
+      "page": 5,
+      "emotes": [
+        "Infectious"
+      ]
+    }
+  ]
+}
