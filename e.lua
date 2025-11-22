@@ -17,8 +17,8 @@ getgenv().Config = {
             SelectedPetTypes = {}, -- Pet types to farm when SelectiveFarm is enabled
         },
         AutoNeon = { -- Auto neon 
-            Enabled = true,
-            MakeMega = true, -- to use neon pets to make mega neon
+            Enabled = false,
+            MakeMega = false, -- to use neon pets to make mega neon
         },
         Misc = {
             AutoShowUI = true, -- (To Load the ui or not)
@@ -57,7 +57,7 @@ getgenv().Config = {
             Items = {},
         },
         AutoRecycle = {
-            Enabled = true, -- Enable auto recycler system
+            Enabled = false, -- Enable auto recycler system
             RarityFilter = { --Rarity filter for recycling pets
                 common = true,
                 uncommon = true,
