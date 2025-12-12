@@ -6,8 +6,8 @@ getgenv().Config = {
         BabyFarm = true, -- Enable/disable baby farming
         PetFarm = {
             Enabled = true, -- Enable/disable pet farming
-            FarmEggs = true, -- Farm eggs instead of regular pets
-            BuyEggs = true, -- Automatically buy eggs when needed
+            FarmEggs = false, -- Farm eggs instead of regular pets
+            BuyEggs = false, -- Automatically buy eggs when needed
             EggType = "any", -- Which egg type to farm (any or specific egg ID)
             BuyEggType = "retired_egg", -- Which egg type to buy
             MaxPets = 2, -- Maximum pets to equip (1-2)
@@ -25,7 +25,7 @@ getgenv().Config = {
         },
         Performance = {
             Disable3DRendering = false, -- Disable 3D rendering for better performance
-            ReduceGraphics = false, -- Reduce graphics quality to minimum
+            ReduceGraphics = true, -- Reduce graphics quality to minimum
         },
         AutoPotion = {
             Enabled = false, -- Use age potions automatically
