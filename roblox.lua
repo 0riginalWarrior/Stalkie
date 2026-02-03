@@ -20,32 +20,7 @@ end
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-
-local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
-local UI_CONFIG = {
-    MainColor = Color3.fromRGB(22, 22, 24),
-    SecondaryColor = Color3.fromRGB(30, 30, 34),
-    AccentColor = Color3.fromRGB(35, 120, 180),
-    ErrorColor = Color3.fromRGB(239, 68, 68),
-    SuccessColor = Color3.fromRGB(25, 135, 65),
-    WarningColor = Color3.fromRGB(251, 191, 36),
-    OrangeColor = Color3.fromRGB(255, 165, 0),
-    PurpleColor = Color3.fromRGB(147, 112, 219),
-    TextColor = Color3.fromRGB(248, 250, 252),
-    SubTextColor = Color3.fromRGB(148, 163, 184),
-    BorderColor = Color3.fromRGB(51, 65, 85),
-    HoverColor = Color3.fromRGB(40, 40, 46),
-    Font = Enum.Font.GothamMedium,
-    HeaderFont = Enum.Font.GothamBold,
-    TextSize = 14,
-    TitleSize = 18,
-    SubTextSize = 12,
-    CornerRadius = UDim.new(0, 8),
-    WindowCornerRadius = UDim.new(0, 12),
-    BorderSize = 1,
-    Padding = 12,
-}
+local HttpService = game:GetService("HttpService")
 
 local api
 do
@@ -79,30 +54,27 @@ else
     makefolder(folder)
 end
 
-local function CreateInstance(className, properties)
+local Theme = {
+    Background = Color3.fromRGB(12, 12, 14),
+    Secondary = Color3.fromRGB(16, 16, 18),
+    Accent = Color3.fromRGB(0, 116, 224),
+    AccentHover = Color3.fromRGB(0, 140, 255),
+    Success = Color3.fromRGB(34, 197, 94),
+    Error = Color3.fromRGB(239, 68, 68),
+    Warning = Color3.fromRGB(251, 191, 36),
+    Text = Color3.fromRGB(235, 235, 235),
+    TextDim = Color3.fromRGB(156, 163, 175),
+    Border = Color3.fromRGB(28, 28, 32)
+}
+
+local CustomFont = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+
+local function Create(className, properties)
     local instance = Instance.new(className)
     for property, value in pairs(properties) do
         instance[property] = value
     end
     return instance
-end
-
-local function ApplyCorner(instance, radius)
-    local corner = CreateInstance("UICorner", {
-        CornerRadius = radius or UI_CONFIG.CornerRadius
-    })
-    corner.Parent = instance
-    return corner
-end
-
-local function ApplyStroke(instance, color, thickness)
-    local stroke = CreateInstance("UIStroke", {
-        Color = color or UI_CONFIG.BorderColor,
-        Thickness = thickness or UI_CONFIG.BorderSize,
-        ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    })
-    stroke.Parent = instance
-    return stroke
 end
 
 local function try_load_with_key(key)
@@ -158,439 +130,448 @@ if saved_key then
     end
 end
 
-local player = game.Players.LocalPlayer
-
-local gui_parent = player:WaitForChild("PlayerGui")
-if gethui then
-    gui_parent = gethui()
-end
-
-local gui = CreateInstance("ScreenGui", {
-    Name = "KeySystemGui",
+local Gui = Create("ScreenGui", {
+    Name = "KeySystem",
     ResetOnSpawn = false,
     ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-    IgnoreGuiInset = true,
-    Parent = gui_parent
+    Parent = gethui and gethui() or game.Players.LocalPlayer:WaitForChild("PlayerGui")
 })
 
-local frame = CreateInstance("Frame", {
-    Size = isMobile and UDim2.new(0, 320, 0, 280) or UDim2.new(0, 400, 0, 320),
+local Main = Create("Frame", {
+    Size = UDim2.new(0, 0, 0, 0),
     Position = UDim2.new(0.5, 0, 0.5, 0),
     AnchorPoint = Vector2.new(0.5, 0.5),
-    BackgroundColor3 = UI_CONFIG.MainColor,
+    BackgroundColor3 = Theme.Background,
     BorderSizePixel = 0,
-    Parent = gui
+    Parent = Gui
 })
 
-ApplyCorner(frame, UI_CONFIG.WindowCornerRadius)
-ApplyStroke(frame, UI_CONFIG.BorderColor, 2)
+Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = Main})
+Create("UIStroke", {Color = Theme.Border, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Parent = Main})
 
-local header = CreateInstance("Frame", {
-    Size = UDim2.new(1, 0, 0, 50),
-    BackgroundColor3 = UI_CONFIG.SecondaryColor,
-    BorderSizePixel = 0,
-    Parent = frame
-})
-
-ApplyCorner(header, UI_CONFIG.WindowCornerRadius)
-
-local bottomCover = CreateInstance("Frame", {
-    Size = UDim2.new(1, 0, 0, 25),
-    Position = UDim2.new(0, 0, 1, -25),
-    BackgroundColor3 = UI_CONFIG.SecondaryColor,
-    BorderSizePixel = 0,
-    Parent = header
-})
-
-local title = CreateInstance("TextLabel", {
-    Size = UDim2.new(1, -20, 1, 0),
-    Position = UDim2.new(0, 20, 0, 0),
+local Title = Create("TextLabel", {
+    Size = UDim2.new(1, -40, 0, 24),
+    Position = UDim2.new(0, 20, 0, 20),
     BackgroundTransparency = 1,
-    Text = " Stalkie Premium Key System",
-    Font = UI_CONFIG.HeaderFont,
-    TextSize = isMobile and 16 or UI_CONFIG.TitleSize,
-    TextColor3 = UI_CONFIG.AccentColor,
+    Text = "Stalkie Premium",
+    FontFace = CustomFont,
+    TextSize = 18,
+    TextColor3 = Theme.Text,
     TextXAlignment = Enum.TextXAlignment.Left,
-    Parent = header
+    Parent = Main
 })
 
-local subtitle = CreateInstance("TextLabel", {
-    Size = UDim2.new(1, -40, 0, 20),
-    Position = UDim2.new(0, 20, 0, 65),
+local Subtitle = Create("TextLabel", {
+    Size = UDim2.new(1, -40, 0, 16),
+    Position = UDim2.new(0, 20, 0, 48),
     BackgroundTransparency = 1,
-    Text = "Please enter your premium key to continue",
-    Font = UI_CONFIG.Font,
-    TextSize = UI_CONFIG.SubTextSize,
-    TextColor3 = UI_CONFIG.SubTextColor,
+    Text = "Enter your key to continue",
+    FontFace = CustomFont,
+    TextSize = 13,
+    TextColor3 = Theme.TextDim,
+    TextTransparency = 0.3,
     TextXAlignment = Enum.TextXAlignment.Left,
-    Parent = frame
+    Parent = Main
 })
 
-local inputContainer = CreateInstance("Frame", {
-    Size = UDim2.new(1, -40, 0, 40),
-    Position = UDim2.new(0, 20, 0, 95),
-    BackgroundColor3 = UI_CONFIG.SecondaryColor,
+local InputFrame = Create("Frame", {
+    Size = UDim2.new(1, -40, 0, 36),
+    Position = UDim2.new(0, 20, 0, 80),
+    BackgroundColor3 = Theme.Secondary,
     BorderSizePixel = 0,
-    Parent = frame
+    Parent = Main
 })
 
-ApplyCorner(inputContainer, UI_CONFIG.CornerRadius)
-ApplyStroke(inputContainer, UI_CONFIG.BorderColor, 1)
+Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = InputFrame})
+local InputStroke = Create("UIStroke", {Color = Theme.Border, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Parent = InputFrame})
 
-local keyInput = CreateInstance("TextBox", {
-    Size = UDim2.new(1, -20, 1, 0),
-    Position = UDim2.new(0, 10, 0, 0),
+local KeyInput = Create("TextBox", {
+    Size = UDim2.new(1, -16, 1, 0),
+    Position = UDim2.new(0, 8, 0, 0),
     BackgroundTransparency = 1,
-    PlaceholderText = "Enter your key here...",
-    PlaceholderColor3 = UI_CONFIG.SubTextColor,
+    PlaceholderText = "Paste your key here...",
+    PlaceholderColor3 = Theme.TextDim,
     Text = "",
-    Font = UI_CONFIG.Font,
-    TextSize = UI_CONFIG.TextSize,
-    TextColor3 = UI_CONFIG.TextColor,
+    FontFace = CustomFont,
+    TextSize = 13,
+    TextColor3 = Theme.Text,
     TextXAlignment = Enum.TextXAlignment.Left,
-    Parent = inputContainer
+    ClearTextOnFocus = false,
+    Parent = InputFrame
 })
 
-local buttonContainer = CreateInstance("Frame", {
-    Size = UDim2.new(1, -40, 0, 40),
-    Position = UDim2.new(0, 20, 0, 155),
+local ButtonFrame = Create("Frame", {
+    Size = UDim2.new(1, -40, 0, 36),
+    Position = UDim2.new(0, 20, 0, 128),
     BackgroundTransparency = 1,
-    Parent = frame
+    Parent = Main
 })
 
-local getKeyButton = CreateInstance("TextButton", {
+local GetKeyBtn = Create("TextButton", {
     Size = UDim2.new(0.48, 0, 1, 0),
     Position = UDim2.new(0, 0, 0, 0),
-    BackgroundColor3 = UI_CONFIG.AccentColor,
+    BackgroundColor3 = Theme.Secondary,
     BorderSizePixel = 0,
-    Text = " Get Key",
-    Font = UI_CONFIG.HeaderFont,
-    TextSize = UI_CONFIG.TextSize,
-    TextColor3 = UI_CONFIG.TextColor,
+    Text = "Get Key",
+    FontFace = CustomFont,
+    TextSize = 13,
+    TextColor3 = Theme.Text,
     AutoButtonColor = false,
-    Parent = buttonContainer
+    Parent = ButtonFrame
 })
 
-ApplyCorner(getKeyButton, UI_CONFIG.CornerRadius)
+Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = GetKeyBtn})
+Create("UIStroke", {Color = Theme.Border, Thickness = 1, Parent = GetKeyBtn})
 
-local verifyButton = CreateInstance("TextButton", {
+local VerifyBtn = Create("TextButton", {
     Size = UDim2.new(0.48, 0, 1, 0),
     Position = UDim2.new(0.52, 0, 0, 0),
-    BackgroundColor3 = UI_CONFIG.SuccessColor,
+    BackgroundColor3 = Theme.Accent,
     BorderSizePixel = 0,
-    Text = " Verify Key",
-    Font = UI_CONFIG.HeaderFont,
-    TextSize = UI_CONFIG.TextSize,
-    TextColor3 = UI_CONFIG.TextColor,
+    Text = "Verify",
+    FontFace = CustomFont,
+    TextSize = 13,
+    TextColor3 = Theme.Text,
     AutoButtonColor = false,
-    Parent = buttonContainer
+    Parent = ButtonFrame
 })
 
-ApplyCorner(verifyButton, UI_CONFIG.CornerRadius)
+Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = VerifyBtn})
 
-local statusLabel = CreateInstance("TextLabel", {
-    Size = UDim2.new(1, -40, 0, 60),
-    Position = UDim2.new(0, 20, 0, 210),
+local StatusText = Create("TextLabel", {
+    Size = UDim2.new(1, -40, 0, 32),
+    Position = UDim2.new(0, 20, 0, 176),
     BackgroundTransparency = 1,
-    Text = "Ready to verify your key",
-    Font = UI_CONFIG.Font,
-    TextSize = UI_CONFIG.SubTextSize,
-    TextColor3 = UI_CONFIG.SubTextColor,
+    Text = "Ready",
+    FontFace = CustomFont,
+    TextSize = 12,
+    TextColor3 = Theme.TextDim,
+    TextTransparency = 0.4,
     TextXAlignment = Enum.TextXAlignment.Center,
-    TextYAlignment = Enum.TextYAlignment.Top,
     TextWrapped = true,
-    Parent = frame
+    Parent = Main
 })
 
-getKeyButton.MouseEnter:Connect(function()
-    TweenService:Create(getKeyButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.fromRGB(28, 95, 140)
-    }):Play()
+KeyInput.Focused:Connect(function()
+    InputStroke.Color = Theme.Accent
 end)
 
-getKeyButton.MouseLeave:Connect(function()
-    TweenService:Create(getKeyButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = UI_CONFIG.AccentColor
-    }):Play()
+KeyInput.FocusLost:Connect(function()
+    InputStroke.Color = Theme.Border
 end)
 
-verifyButton.MouseEnter:Connect(function()
-    TweenService:Create(verifyButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.fromRGB(20, 110, 50)
-    }):Play()
+GetKeyBtn.MouseEnter:Connect(function()
+    TweenService:Create(GetKeyBtn, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Border}):Play()
 end)
 
-verifyButton.MouseLeave:Connect(function()
-    TweenService:Create(verifyButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = UI_CONFIG.SuccessColor
-    }):Play()
+GetKeyBtn.MouseLeave:Connect(function()
+    TweenService:Create(GetKeyBtn, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Secondary}):Play()
 end)
 
-keyInput.Focused:Connect(function()
-    ApplyStroke(inputContainer, UI_CONFIG.AccentColor, 2)
+VerifyBtn.MouseEnter:Connect(function()
+    TweenService:Create(VerifyBtn, TweenInfo.new(0.2), {BackgroundColor3 = Theme.AccentHover}):Play()
 end)
 
-keyInput.FocusLost:Connect(function()
-    ApplyStroke(inputContainer, UI_CONFIG.BorderColor, 1)
+VerifyBtn.MouseLeave:Connect(function()
+    TweenService:Create(VerifyBtn, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Accent}):Play()
 end)
 
-local linkvertise_link = "https://ads.luarmor.net/get_key?for=Stalkie_Premium_Key-tmDFuKXiJWOW"
-local workink_link = "https://ads.luarmor.net/get_key?for=Premium_Workink-ZwXuREfbRLwQ"
-
-getKeyButton.MouseButton1Click:Connect(function()
-    TweenService:Create(getKeyButton, TweenInfo.new(0.1), {
-        Size = UDim2.new(0.46, 0, 0.9, 0)
-    }):Play()
-    
+GetKeyBtn.MouseButton1Click:Connect(function()
+    TweenService:Create(GetKeyBtn, TweenInfo.new(0.1), {Size = UDim2.new(0.46, 0, 0.95, 0)}):Play()
     task.wait(0.1)
+    TweenService:Create(GetKeyBtn, TweenInfo.new(0.1), {Size = UDim2.new(0.48, 0, 1, 0)}):Play()
     
-    TweenService:Create(getKeyButton, TweenInfo.new(0.1), {
-        Size = UDim2.new(0.48, 0, 1, 0)
-    }):Play()
-    
-    local overlay = CreateInstance("Frame", {
+    local Overlay = Create("Frame", {
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = 0.5,
-        Parent = frame,
-        ZIndex = 9,
-    })
-    
-    local popup = CreateInstance("Frame", {
-        Size = UDim2.new(0.8, 0, 0.8, 0), 
-        Position = UDim2.new(0.1, 0, 0.1, 0), 
-        BackgroundColor3 = UI_CONFIG.SecondaryColor,
         BorderSizePixel = 0,
-        Parent = frame,
-        ZIndex = 10,
+        Parent = Main,
+        ZIndex = 50
     })
-    ApplyCorner(popup, UI_CONFIG.CornerRadius)
-    ApplyStroke(popup, UI_CONFIG.BorderColor, 1)
     
-    local warningContainer = CreateInstance("Frame", {
-        Size = UDim2.new(1, -20, 0, 160), 
-        Position = UDim2.new(0, 10, 0, 10),
-        BackgroundColor3 = UI_CONFIG.MainColor,
+    local Popup = Create("Frame", {
+        Size = UDim2.new(1, -40, 0, 140),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundColor3 = Theme.Secondary,
         BorderSizePixel = 0,
-        Parent = popup,
-        ZIndex = 10,
+        Parent = Main,
+        ZIndex = 51
     })
-    ApplyCorner(warningContainer, UI_CONFIG.CornerRadius)
-    ApplyStroke(warningContainer, UI_CONFIG.WarningColor, 1)
     
-    local warningTitle = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, -20, 0, 20),
-        Position = UDim2.new(0, 10, 0, 5),
+    Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = Popup})
+    Create("UIStroke", {Color = Theme.Border, Thickness = 1, Parent = Popup})
+    
+    local AccentBar = Create("Frame", {
+        Size = UDim2.new(1, 0, 0, 3),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundColor3 = Theme.Accent,
+        BorderSizePixel = 0,
+        Parent = Popup
+    })
+    
+    Create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = AccentBar})
+    
+    local AccentCover = Create("Frame", {
+        Size = UDim2.new(1, 0, 0, 3),
+        Position = UDim2.new(0, 0, 1, -3),
+        BackgroundColor3 = Theme.Accent,
+        BorderSizePixel = 0,
+        Parent = AccentBar
+    })
+    
+    local PopupTitle = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 20),
+        Position = UDim2.new(0, 12, 0, 12),
         BackgroundTransparency = 1,
-        Text = "Important Notice",
-        Font = UI_CONFIG.HeaderFont,
-        TextSize = UI_CONFIG.TextSize + 2,
-        TextColor3 = UI_CONFIG.WarningColor,
+        Text = "Select Key Provider",
+        FontFace = CustomFont,
+        TextSize = 15,
+        TextColor3 = Theme.Text,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Parent = Popup
+    })
+    
+    local PopupDesc = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 28),
+        Position = UDim2.new(0, 12, 0, 36),
+        BackgroundTransparency = 1,
+        Text = "Choose your preferred provider and complete the process",
+        FontFace = CustomFont,
+        TextSize = 12,
+        TextColor3 = Theme.TextDim,
+        TextTransparency = 0.3,
         TextXAlignment = Enum.TextXAlignment.Left,
         TextWrapped = true,
-        Parent = warningContainer
+        Parent = Popup
     })
     
-    local warning = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, -20, 0, 60), 
-        Position = UDim2.new(0, 10, 0, 25),
+    local ButtonContainer = Create("Frame", {
+        Size = UDim2.new(1, -24, 0, 42),
+        Position = UDim2.new(0, 12, 0, 76),
         BackgroundTransparency = 1,
-        Text = "Close pop-up ads and complete the process.",
-        TextWrapped = true,
-        Font = UI_CONFIG.Font,
-        TextSize = UI_CONFIG.TextSize,
-        TextColor3 = UI_CONFIG.TextColor,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextYAlignment = Enum.TextYAlignment.Top,
-        Parent = warningContainer
+        Parent = Popup
     })
     
-    local avgWarning = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, -20, 0, 60), 
-        Position = UDim2.new(0, 10, 0, 85),
-        BackgroundTransparency = 1,
-        Text = "I fixed linkvertise and removed the one hour cooldown.",
-        TextWrapped = true,
-        Font = UI_CONFIG.Font,
-        TextSize = UI_CONFIG.TextSize,
-        TextColor3 = UI_CONFIG.WarningColor, 
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextYAlignment = Enum.TextYAlignment.Top,
-        Parent = warningContainer
-    })
-    
-    local popupButtons = CreateInstance("Frame", {
-        Size = UDim2.new(1, -20, 0, 40),
-        Position = UDim2.new(0, 10, 0, 180), 
-        BackgroundTransparency = 1,
-        Parent = popup
-    })
-    
-    local linkvertiseButton = CreateInstance("TextButton", {
+    local LinkvertiseBtn = Create("TextButton", {
         Size = UDim2.new(0.48, 0, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
-        BackgroundColor3 = UI_CONFIG.OrangeColor,
+        BackgroundColor3 = Color3.fromRGB(255, 140, 0),
         BorderSizePixel = 0,
-        Text = "Linkvertise",
-        Font = UI_CONFIG.HeaderFont,
-        TextSize = UI_CONFIG.TextSize,
-        TextColor3 = UI_CONFIG.TextColor,
+        Text = "",
         AutoButtonColor = false,
-        Parent = popupButtons
+        Parent = ButtonContainer
     })
-    ApplyCorner(linkvertiseButton, UI_CONFIG.CornerRadius)
     
-    linkvertiseButton.MouseEnter:Connect(function()
-        TweenService:Create(linkvertiseButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(200, 130, 0)
-        }):Play()
-    end)
+    Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = LinkvertiseBtn})
     
-    linkvertiseButton.MouseLeave:Connect(function()
-        TweenService:Create(linkvertiseButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = UI_CONFIG.OrangeColor
-        }):Play()
-    end)
+    local LinkIcon = Create("Frame", {
+        Size = UDim2.new(0, 6, 0, 6),
+        Position = UDim2.new(0, 10, 0.5, 0),
+        AnchorPoint = Vector2.new(0, 0.5),
+        BackgroundColor3 = Theme.Text,
+        BorderSizePixel = 0,
+        Parent = LinkvertiseBtn
+    })
     
-    linkvertiseButton.MouseButton1Click:Connect(function()
-        TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.46, 0, 0.9, 0)
-        }):Play()
-        
-        task.wait(0.1)
-        
-        TweenService:Create(linkvertiseButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.48, 0, 1, 0)
-        }):Play()
-        
-        setclipboard(linkvertise_link)
-        statusLabel.Text = "Linkvertise link copied! Complete the key process and paste your key above."
-        statusLabel.TextColor3 = UI_CONFIG.AccentColor
-        overlay:Destroy()
-        popup:Destroy()
-    end)
+    Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = LinkIcon})
     
-    local workinkButton = CreateInstance("TextButton", {
+    local LinkLabel = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 16),
+        Position = UDim2.new(0, 20, 0, 6),
+        BackgroundTransparency = 1,
+        Text = "Linkvertise",
+        FontFace = CustomFont,
+        TextSize = 13,
+        TextColor3 = Theme.Text,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Parent = LinkvertiseBtn
+    })
+    
+    local LinkTime = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 12),
+        Position = UDim2.new(0, 20, 0, 24),
+        BackgroundTransparency = 1,
+        Text = "6 hours key",
+        FontFace = CustomFont,
+        TextSize = 12,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextTransparency = 0,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Parent = LinkvertiseBtn
+    })
+    
+    local WorkinkBtn = Create("TextButton", {
         Size = UDim2.new(0.48, 0, 1, 0),
         Position = UDim2.new(0.52, 0, 0, 0),
-        BackgroundColor3 = UI_CONFIG.SuccessColor,
+        BackgroundColor3 = Theme.Success,
         BorderSizePixel = 0,
-        Text = "Workink",
-        Font = UI_CONFIG.HeaderFont,
-        TextSize = UI_CONFIG.TextSize,
-        TextColor3 = UI_CONFIG.TextColor,
+        Text = "",
         AutoButtonColor = false,
-        Parent = popupButtons
+        Parent = ButtonContainer
     })
-    ApplyCorner(workinkButton, UI_CONFIG.CornerRadius)
     
-    workinkButton.MouseEnter:Connect(function()
-        TweenService:Create(workinkButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(20, 110, 50)
-        }):Play()
-    end)
+    Create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = WorkinkBtn})
     
-    workinkButton.MouseLeave:Connect(function()
-        TweenService:Create(workinkButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = UI_CONFIG.SuccessColor
-        }):Play()
-    end)
+    local WorkIcon = Create("Frame", {
+        Size = UDim2.new(0, 6, 0, 6),
+        Position = UDim2.new(0, 10, 0.5, 0),
+        AnchorPoint = Vector2.new(0, 0.5),
+        BackgroundColor3 = Theme.Text,
+        BorderSizePixel = 0,
+        Parent = WorkinkBtn
+    })
     
-    workinkButton.MouseButton1Click:Connect(function()
-        TweenService:Create(workinkButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.46, 0, 0.9, 0)
-        }):Play()
-        
-        task.wait(0.1)
-        
-        TweenService:Create(workinkButton, TweenInfo.new(0.1), {
-            Size = UDim2.new(0.48, 0, 1, 0)
-        }):Play()
-        
-        setclipboard(workink_link)
-        statusLabel.Text = "Workink link copied! Complete the key process and paste your key above."
-        statusLabel.TextColor3 = UI_CONFIG.AccentColor
-        overlay:Destroy()
-        popup:Destroy()
-    end)
+    Create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = WorkIcon})
     
-    local keyInfoLabel = CreateInstance("TextLabel", {
-        Size = UDim2.new(1, -20, 0, 30),
-        Position = UDim2.new(0, 10, 0, 230), 
+    local WorkLabel = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 16),
+        Position = UDim2.new(0, 20, 0, 6),
         BackgroundTransparency = 1,
-        Text = "Linkvertise: 6-hour key | Workink: 12-hour key",
-        Font = UI_CONFIG.Font,
-        TextSize = UI_CONFIG.SubTextSize,
-        TextColor3 = UI_CONFIG.SubTextColor,
-        TextXAlignment = Enum.TextXAlignment.Center,
-        TextYAlignment = Enum.TextYAlignment.Top,
-        TextWrapped = true,
-        Parent = popup
+        Text = "Workink",
+        FontFace = CustomFont,
+        TextSize = 13,
+        TextColor3 = Theme.Text,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Parent = WorkinkBtn
     })
+    
+    local WorkTime = Create("TextLabel", {
+        Size = UDim2.new(1, -24, 0, 12),
+        Position = UDim2.new(0, 20, 0, 24),
+        BackgroundTransparency = 1,
+        Text = "12 hours key",
+        FontFace = CustomFont,
+        TextSize = 12,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextTransparency = 0,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Parent = WorkinkBtn
+    })
+    
+    LinkvertiseBtn.MouseEnter:Connect(function()
+        TweenService:Create(LinkvertiseBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 120, 0)}):Play()
+    end)
+    
+    LinkvertiseBtn.MouseLeave:Connect(function()
+        TweenService:Create(LinkvertiseBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255, 140, 0)}):Play()
+    end)
+    
+    WorkinkBtn.MouseEnter:Connect(function()
+        TweenService:Create(WorkinkBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30, 170, 80)}):Play()
+    end)
+    
+    WorkinkBtn.MouseLeave:Connect(function()
+        TweenService:Create(WorkinkBtn, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Success}):Play()
+    end)
+    
+    LinkvertiseBtn.MouseButton1Click:Connect(function()
+        setclipboard("https://ads.luarmor.net/get_key?for=Stalkie_Premium_Key-tmDFuKXiJWOW")
+        StatusText.Text = "Linkvertise link copied to clipboard"
+        StatusText.TextColor3 = Theme.Accent
+        StatusText.TextTransparency = 0
+        Overlay:Destroy()
+        Popup:Destroy()
+    end)
+    
+    WorkinkBtn.MouseButton1Click:Connect(function()
+        setclipboard("https://ads.luarmor.net/get_key?for=Premium_Workink-ZwXuREfbRLwQ")
+        StatusText.Text = "Workink link copied to clipboard"
+        StatusText.TextColor3 = Theme.Accent
+        StatusText.TextTransparency = 0
+        Overlay:Destroy()
+        Popup:Destroy()
+    end)
 end)
 
-verifyButton.MouseButton1Click:Connect(function()
-    local input_key = keyInput.Text:gsub("%s+", "")
+VerifyBtn.MouseButton1Click:Connect(function()
+    local input_key = KeyInput.Text:gsub("%s+", "")
     
     if input_key == "" then
-        statusLabel.Text = "Please enter your key in the field above."
-        statusLabel.TextColor3 = UI_CONFIG.WarningColor
+        StatusText.Text = "Please enter a key"
+        StatusText.TextColor3 = Theme.Error
+        StatusText.TextTransparency = 0
         return
     end
     
-    TweenService:Create(verifyButton, TweenInfo.new(0.1), {
-        Size = UDim2.new(0.46, 0, 0.9, 0)
-    }):Play()
-    
+    TweenService:Create(VerifyBtn, TweenInfo.new(0.1), {Size = UDim2.new(0.46, 0, 0.95, 0)}):Play()
     task.wait(0.1)
+    TweenService:Create(VerifyBtn, TweenInfo.new(0.1), {Size = UDim2.new(0.48, 0, 1, 0)}):Play()
     
-    TweenService:Create(verifyButton, TweenInfo.new(0.1), {
-        Size = UDim2.new(0.48, 0, 1, 0)
-    }):Play()
-    
-    statusLabel.Text = "Verifying key... Please wait."
-    statusLabel.TextColor3 = UI_CONFIG.AccentColor
-    verifyButton.Text = " Verifying..."
+    StatusText.Text = "Verifying..."
+    StatusText.TextColor3 = Theme.Accent
+    StatusText.TextTransparency = 0
+    VerifyBtn.Text = "Verifying..."
     
     task.spawn(function()
         local success, message = try_load_with_key(input_key)
         if success then
-            statusLabel.Text = message
-            statusLabel.TextColor3 = UI_CONFIG.SuccessColor
+            StatusText.Text = message
+            StatusText.TextColor3 = Theme.Success
+            VerifyBtn.Text = "Success!"
             
-            task.wait(1.5)
+            task.wait(2)
             
-            if gui and gui.Parent then
-                gui:Destroy()
+            StatusText.Text = "Loading script..."
+            StatusText.TextColor3 = Theme.Accent
+            
+            task.wait(0.5)
+            
+            for _, element in pairs(Main:GetDescendants()) do
+                if element:IsA("TextLabel") or element:IsA("TextButton") or element:IsA("TextBox") then
+                    TweenService:Create(element, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        TextTransparency = 1
+                    }):Play()
+                end
+                if element:IsA("Frame") or element:IsA("TextButton") then
+                    TweenService:Create(element, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        BackgroundTransparency = 1
+                    }):Play()
+                end
+                if element:IsA("UIStroke") then
+                    TweenService:Create(element, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        Transparency = 1
+                    }):Play()
+                end
             end
             
-            task.wait(0.1) 
+            TweenService:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                BackgroundTransparency = 1
+            }):Play()
+            
+            task.wait(0.35)
+            
+            TweenService:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+                Size = UDim2.new(0, 0, 0, 0)
+            }):Play()
+            
+            task.wait(0.35)
+            Gui:Destroy()
+            
             load_main_script()
         else
-            verifyButton.Text = " Verify Key"
-            statusLabel.Text = message
-            statusLabel.TextColor3 = UI_CONFIG.ErrorColor
+            VerifyBtn.Text = "Verify"
+            StatusText.Text = message
+            StatusText.TextColor3 = Theme.Error
         end
     end)
 end)
 
-local dragging = false
-local dragStart = nil
-local startPos = nil
+local dragging, dragStart, startPos = false, nil, nil
 
-header.InputBegan:Connect(function(input)
+Main.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
-        startPos = frame.Position
+        startPos = Main.Position
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
     if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - dragStart
-        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
-                                  startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end)
 
@@ -600,8 +581,6 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
-frame.Size = UDim2.new(0, 0, 0, 0)
-local entrance = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-    Size = isMobile and UDim2.new(0, 320, 0, 280) or UDim2.new(0, 400, 0, 320)
-})
-entrance:Play()
+TweenService:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+    Size = UDim2.new(0, 360, 0, 228)
+}):Play()
